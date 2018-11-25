@@ -40,7 +40,10 @@ public class cloudServers {
 
         try{
             if(this.users.containsKey(username)) throw new Exception("Already in use that username!");
-            else users.put(username, new User(username, password));
+            else{
+                users.put(username, new User(username, password));
+                System.out.println("User " + username + " com pass: " + password + " adicionado com sucesso!");
+            }
         }
         finally {
             this.usersLock.unlock();

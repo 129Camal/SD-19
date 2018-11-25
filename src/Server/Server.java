@@ -25,7 +25,7 @@ public class Server {
 
                 Skeleton skeleton = new Skeleton(cs, msg, in);
 
-                Notificator notificator = new Notificator(out, c, msg);
+                Notificator notificator = new Notificator(out, c, lock, msg);
 
                 skeleton.start();
                 notificator.start();

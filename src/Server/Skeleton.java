@@ -43,6 +43,7 @@ public class Skeleton extends Thread{
 
                 //caso o pedido recebido seja signin;
                 else if (order.equals("signin")) {
+                    //System.out.println("SIGN IN PEDIDO!");
                     username = in.readLine();
                     password = in.readLine();
 

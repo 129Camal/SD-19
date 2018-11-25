@@ -11,11 +11,13 @@ public class MessageInbox {
     private ArrayList<String> messages;
     private ReentrantLock lock;
     private Condition c;
+    private int count;
 
     public MessageInbox(ReentrantLock lock, Condition c){
         this.messages = new ArrayList<>();
         this.lock = lock;
         this.c = c;
+        this.count = 0;
     }
 
     public void setMessage(String msg){
@@ -24,6 +26,7 @@ public class MessageInbox {
         try{
             this.messages.add(msg);
             c.signal();
+            //System.out.println("Adicionei a mensagem: " + msg);
         }
         finally {
             this.lock.unlock();
@@ -34,11 +37,21 @@ public class MessageInbox {
         this.lock.lock();
 
         try{
-            return this.messages.get(messages.size());
+            if(this.count < messages.size())
+                return this.messages.get(count++);
+            else return null;
         }
         finally {
             this.lock.unlock();
         }
+    }
+
+    public ReentrantLock getLock() {
+        return this.lock;
+    }
+
+    public Condition getCondition() {
+        return this.c;
     }
 
 }
