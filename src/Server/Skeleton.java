@@ -35,7 +35,7 @@ public class Skeleton extends Thread{
                     password = in.readLine();
                     try {
                         this.user = cs.logIn(username, password);
-                        msg.setMessage("Logged In");
+                        msg.setMessage("Logged in");
                     } catch (Exception e) {
                         msg.setMessage(e.getMessage());
                     }
@@ -48,7 +48,7 @@ public class Skeleton extends Thread{
 
                     try{
                         cs.signIn(username, password);
-                        msg.setMessage("Signed In");
+                        msg.setMessage("Signed in");
                     } catch (Exception e){
                         msg.setMessage(e.getMessage());
                     }
