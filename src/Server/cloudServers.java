@@ -19,30 +19,30 @@ public class cloudServers {
         this.serversLock = new ReentrantLock();
     }
 
-    public User logIn(String username, String password) throws Exception {
+    public User logIn(String email, String password) throws Exception {
         this.usersLock.lock();
 
         try{
-            if(users.containsKey(username)){
-                if(users.get(username).getPassword().equals(password)) throw new Exception("Wrong Password!");
+            if(users.containsKey(email)){
+                if(!(users.get(email).getPassword().equals(password))) throw new Exception("Wrong Password");
             }
             else throw new Exception("Not an account");
 
-            return this.users.get(username);
+            return this.users.get(email);
         }
         finally {
             this.usersLock.unlock();
         }
     }
 
-    public void signIn(String username, String password) throws Exception {
+    public void signIn(String email, String password) throws Exception {
         this.usersLock.lock();
 
         try{
-            if(this.users.containsKey(username)) throw new Exception("Already in use that username!");
+            if(this.users.containsKey(email)) throw new Exception("Already in use that email!");
             else{
-                users.put(username, new User(username, password));
-                System.out.println("User " + username + " com pass: " + password + " adicionado com sucesso!");
+                users.put(email, new User(email, password));
+                System.out.println("User " + email + " com pass: " + password + " adicionado com sucesso!");
             }
         }
         finally {

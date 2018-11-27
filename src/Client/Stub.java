@@ -31,7 +31,7 @@ public class Stub extends Thread {
                 if(menu.getMenuOption()==1){
                     if(option.equals("1")){
                         out.println("login");
-                        System.out.print("Username: ");
+                        System.out.print("Email: ");
                         aux = in.readLine();
                         out.println(aux);
                         System.out.print("Password: ");
@@ -43,7 +43,7 @@ public class Stub extends Thread {
 
                     } else if (option.equals("2")) {
                         out.println("signin");
-                        System.out.print("Username: ");
+                        System.out.print("Email: ");
                         aux = in.readLine();
                         out.println(aux);
                         System.out.print("Password: ");
@@ -53,8 +53,8 @@ public class Stub extends Thread {
                             c.await();
                         this.lock.unlock();
                     }
-                    if(option.equals("1")||option.equals("2")){
-                        System.out.println("\n\n\n\n\n");
+                    if(option.equals("1") || option.equals("2")){
+                        System.out.println("\n\n");
                         menu.setVisible();
                     }
                 }

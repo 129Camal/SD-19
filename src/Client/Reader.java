@@ -27,7 +27,7 @@ public class Reader extends Thread{
                     this.lock.lock();
                         c.signal();
                     this.lock.unlock();
-                } else if (response.equals("Signed in")){
+                } else if (response.equals("Signed in") || response.equals("Wrong Password")){
                     menu.setMenuOption(1);
                     this.lock.lock();
                         c.signal();

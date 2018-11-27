@@ -26,15 +26,15 @@ public class Skeleton extends Thread{
             String order;
             while ((order = in.readLine()) != null) {
 
-                String username, password;
+                String email, password;
 
                 //caso o pedido recebido seja login;
                 if (order.equals("login")) {
 
-                    username = in.readLine();
+                    email = in.readLine();
                     password = in.readLine();
                     try {
-                        this.user = cs.logIn(username, password);
+                        this.user = cs.logIn(email, password);
                         msg.setMessage("Logged in");
                     } catch (Exception e) {
                         msg.setMessage(e.getMessage());
@@ -44,11 +44,11 @@ public class Skeleton extends Thread{
                 //caso o pedido recebido seja signin;
                 else if (order.equals("signin")) {
                     //System.out.println("SIGN IN PEDIDO!");
-                    username = in.readLine();
+                    email = in.readLine();
                     password = in.readLine();
 
                     try{
-                        cs.signIn(username, password);
+                        cs.signIn(email, password);
                         msg.setMessage("Signed in");
                     } catch (Exception e){
                         msg.setMessage(e.getMessage());
