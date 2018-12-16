@@ -14,10 +14,19 @@ public class Menu {
                         "***********************************\n");
                 break;
 
-            case 2: System.out.println("************* MENU ****************\n"+
-                    "* 1 - Acquire Server                 *\n"+
-                    "* 2 - Auctions                       *\n"+
-                    "* 0 - Exit                           *\n"+
+            case 2: System.out.println("************* MENU *******************\n"+
+                    "* 1 - Acquire Server Micro           *\n"+
+                    "* 2 - Acquire Server Large           *\n"+
+                    "* 3 - Show Acquired Servers          *\n"+
+                    "* 4 - Add Founds to Wallet           *\n"+
+                    "* 5 - Auctions                       *\n"+
+                    "* 6 - Personal Data                  *\n"+
+                    "* 0 - Logout                         *\n"+
+                    "**************************************\n");
+                break;
+
+            case 3: System.out.println("* 1 - End Service                    *\n"+
+                    "* 0 - Back                           *\n"+
                     "**************************************\n");
                 break;
         }

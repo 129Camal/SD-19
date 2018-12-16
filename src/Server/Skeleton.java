@@ -6,6 +6,7 @@ package Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Set;
 
 public class Skeleton extends Thread{
 
@@ -26,7 +27,7 @@ public class Skeleton extends Thread{
             String order;
             while ((order = in.readLine()) != null) {
 
-                String email, password;
+                String email, password, value;
 
                 //caso o pedido recebido seja login;
                 if (order.equals("login")) {
@@ -51,6 +52,91 @@ public class Skeleton extends Thread{
                         cs.signIn(email, password);
                         msg.setMessage("Signed in");
                     } catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+                else if(order.equals("acqMicro")){
+
+                    try {
+                        cs.assignMicro(this.user.getEmail());
+                        msg.setMessage("Micro Acquired");
+                    } catch (Exception e) {
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+
+                else if(order.equals("acqLarge")){
+                   try{
+                       cs.assignLarge(this.user.getEmail());
+                       msg.setMessage("Large Acquired");
+                   }
+                   catch (Exception e){
+                       msg.setMessage(e.getMessage());
+                   }
+                } else if(order.equals("listServers")){
+                    try{
+                        Set<Booking> serversAcquired = cs.listServers(this.user.getEmail());
+
+                        StringBuilder sb = new StringBuilder();
+
+                        msg.setMessage("List Acquired");
+
+                        for(Booking book: serversAcquired) {
+                            sb.append(book.toString());
+                            sb.append("\n");
+                        }
+
+                        msg.setMessage(sb.toString());
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                } else if(order.equals("addfounds")){
+                    try{
+                        value = in.readLine();
+
+                        this.user = cs.addFounds(this.user.getEmail(),Double.parseDouble(value));
+
+                        msg.setMessage("FoundsAdded");
+
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+                else if(order.equals("personalinformation")){
+                    try{
+
+                        value = this.user.toString();
+                        msg.setMessage("userinfor");
+                        msg.setMessage(value);
+
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+                else if(order.equals("endservice")){
+                    try{
+
+                        value = in.readLine();
+
+                        this.user = cs.terminateServer(this.user.getEmail(), Integer.parseInt(value));
+
+
+                        msg.setMessage("serviceEnded");
+
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+                else if(order.equals("back")){
+                    try{
+                        msg.setMessage("back");
+
+                    }
+                    catch (Exception e){
                         msg.setMessage(e.getMessage());
                     }
                 }

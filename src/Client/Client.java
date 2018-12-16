@@ -24,7 +24,7 @@ public class Client {
 
         Reader reader = new Reader(in, lock, c, menu);
 
-        Stub stub = new Stub(menu, lock, c, out);
+        Stub stub = new Stub(menu, lock, c, out, socket);
 
         stub.start();
         reader.start();
@@ -32,8 +32,9 @@ public class Client {
         stub.join();
         reader.join();
 
-        socket.shutdownOutput();
-        System.out.println("See ya brozito!");
+        in.close();
+        out.close();
+        System.out.println("See ya!");
 
         socket.close();
 

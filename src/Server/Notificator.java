@@ -32,7 +32,7 @@ public class Notificator extends Thread{
 
                 while(true){
                     while((message = msg.getMessage())==null){
-                        System.out.println("Esperando pelo Signal");
+                        //System.out.println("Esperando pelo Signal");
                         c.await();
                     }
                     this.out.println(message);

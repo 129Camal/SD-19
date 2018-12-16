@@ -7,12 +7,10 @@ public class CServer {
     private double price;
     private boolean available;
 
-    public CServer(int id, String name, double price){
+    public CServer(int id, String name){
         this.id = id;
         this.name = name;
-        this.price = price;
         this.available = true;
-
     }
 
     public int getId() {

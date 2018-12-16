@@ -14,6 +14,7 @@ public class Server {
         ServerSocket server = new ServerSocket(4020);
         Socket socket;
         cloudServers cs = new cloudServers();
+        cs.populate();
         ReentrantLock lock = new ReentrantLock();
 
         try{
