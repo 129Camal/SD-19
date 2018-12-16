@@ -44,7 +44,6 @@ public class Skeleton extends Thread{
 
                 //caso o pedido recebido seja signin;
                 else if (order.equals("signin")) {
-                    //System.out.println("SIGN IN PEDIDO!");
                     email = in.readLine();
                     password = in.readLine();
 
@@ -55,6 +54,8 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
+
+                //caso o pedido recebido seja para adquirir server micro
                 else if(order.equals("acqMicro")){
 
                     try {
@@ -64,7 +65,7 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
-
+                //caso o pedido recebido seja para adquirir server large
                 else if(order.equals("acqLarge")){
                    try{
                        cs.assignLarge(this.user.getEmail());
@@ -73,7 +74,9 @@ public class Skeleton extends Thread{
                    catch (Exception e){
                        msg.setMessage(e.getMessage());
                    }
-                } else if(order.equals("listServers")){
+                }
+                //caso o pedido recebido seja para mostrar todos os servers alugados
+                else if(order.equals("listServers")){
                     try{
                         Set<Booking> serversAcquired = cs.listServers(this.user.getEmail());
 
@@ -91,11 +94,13 @@ public class Skeleton extends Thread{
                     catch (Exception e){
                         msg.setMessage(e.getMessage());
                     }
-                } else if(order.equals("addfounds")){
+                }
+                //caso o pedido seja para adicionar fundos
+                else if(order.equals("addfounds")){
                     try{
                         value = in.readLine();
 
-                        this.user = cs.addFounds(this.user.getEmail(),Double.parseDouble(value));
+                        this.user = cs.addFounds(this.user.getEmail(), Double.parseDouble(value));
 
                         msg.setMessage("FoundsAdded");
 
@@ -104,6 +109,7 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
+                //caso o pedido seja para mostrar a informação pessoal
                 else if(order.equals("personalinformation")){
                     try{
 
@@ -116,6 +122,7 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
+                //caso o pedido seja para acabar com um aluguer de um servidor
                 else if(order.equals("endservice")){
                     try{
 
@@ -131,6 +138,7 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
+                //caso o pedido seja para voltar atrás no menu!
                 else if(order.equals("back")){
                     try{
                         msg.setMessage("back");

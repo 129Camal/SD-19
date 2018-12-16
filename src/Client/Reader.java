@@ -31,7 +31,7 @@ public class Reader extends Thread{
                     this.lock.unlock();
 
                 //SIGN IN
-                } else if (response.equals("Signed in") || response.equals("Wrong Password")){
+                } else if (response.equals("Signed in") || response.equals("Wrong Password") || response.equals("Not an account") || response.equals("Already in use that email!")){
                     menu.setMenuOption(1);
                     this.lock.lock();
                         c.signal();
