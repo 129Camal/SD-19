@@ -17,6 +17,7 @@ public class CServerMicro extends CServer{
 
     public double getPrice() { return this.price;
     }
+    public void setPrice(double price){ this.price = price;}
 
     public boolean isAvailable() { return super.isAvailable();
     }

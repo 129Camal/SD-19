@@ -35,7 +35,7 @@ public class Skeleton extends Thread{
                     email = in.readLine();
                     password = in.readLine();
                     try {
-                        this.user = cs.logIn(email, password);
+                        this.user = cs.logIn(email, password, msg);
                         msg.setMessage("Logged in");
                     } catch (Exception e) {
                         msg.setMessage(e.getMessage());
@@ -48,7 +48,7 @@ public class Skeleton extends Thread{
                     password = in.readLine();
 
                     try{
-                        cs.signIn(email, password);
+                        cs.signIn(email, password, msg);
                         msg.setMessage("Signed in");
                     } catch (Exception e){
                         msg.setMessage(e.getMessage());
@@ -59,8 +59,8 @@ public class Skeleton extends Thread{
                 else if(order.equals("acqMicro")){
 
                     try {
-                        String retornoMicro = cs.assignMicro(this.user.getEmail());
-                        msg.setMessage(retornoMicro);
+                        cs.assignMicro(this.user.getEmail());
+                        msg.setMessage("Micro Acquired");
                     } catch (Exception e) {
                         msg.setMessage(e.getMessage());
                     }
@@ -68,8 +68,8 @@ public class Skeleton extends Thread{
                 //caso o pedido recebido seja para adquirir server large
                 else if(order.equals("acqLarge")){
                    try{
-                       String retornoLarge = cs.assignLarge(this.user.getEmail());
-                       msg.setMessage(retornoLarge);
+                       cs.assignLarge(this.user.getEmail());
+                       msg.setMessage("Large Acquired");
                    }
                    catch (Exception e){
                        msg.setMessage(e.getMessage());

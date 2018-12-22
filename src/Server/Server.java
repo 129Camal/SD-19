@@ -15,7 +15,9 @@ public class Server {
         Socket socket;
         cloudServers cs = new cloudServers();
         cs.populate();
-        cs.initAuctions();
+        //cs.initAuctions();
+        new Thread(cs::manageMicroAuctions).start();
+        new Thread(cs::manageLargeAuctions).start();
         ReentrantLock lock = new ReentrantLock();
 
         try{

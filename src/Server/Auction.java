@@ -31,6 +31,10 @@ public class Auction {
         return this.server;
     }
 
+    public Bid getBestBid(){
+        return this.bestBid;
+    }
+
     @Override
     public String toString() {
         return "Auction " + id +

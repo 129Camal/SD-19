@@ -25,6 +25,8 @@ public class CServer {
         return price;
     }
 
+    public void setPrice(double price){ this.price = price;}
+
     public boolean isAvailable() {
         return available;
     }

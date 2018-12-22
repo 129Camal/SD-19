@@ -141,19 +141,13 @@ public class Reader extends Thread{
                     System.out.println(" Auction for a Micro Server Canceled!\n");
                     System.out.println("**************************************");
 
-                    this.lock.lock();
-                        c.signal();
-                    this.lock.unlock();
+
                 }
                 //Cancel a auction for a Large server
                 else if (response.equals("Auction Large Canceled!")){
                     System.out.println("**************************************\n");
                     System.out.println(" Auction for a Large Server Canceled!\n");
                     System.out.println("**************************************");
-
-                    this.lock.lock();
-                    c.signal();
-                    this.lock.unlock();
                 }
 
                 //Server Unavailable
