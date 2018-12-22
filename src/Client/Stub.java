@@ -72,18 +72,18 @@ public class Stub extends Thread {
                     if(option.equals("1")){
                         out.println("acqMicro");
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
 
                     } else if (option.equals("2")) {
                         out.println("acqLarge");
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
                     } else if (option.equals("3")) {
                         out.println("listServers");
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
                     } else if (option.equals("4")) {
                         out.println("addfounds");
@@ -92,24 +92,26 @@ public class Stub extends Thread {
                         out.println(aux);
 
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
                     }
+
+                    else if (option.equals("5")) {
+                        menu.setMenuOption(4);
+                    }
+
                     else if (option.equals("6")) {
                         out.println("personalinformation");
 
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
                     }
                     else if (option.equals("0")) {
-                        out.println("back");
-                        this.lock.lock();
-                        c.await();
-                        this.lock.unlock();
+                        menu.setMenuOption(1);
                     }
 
-                    if(option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4") || option.equals("6") || option.equals("0")){
+                    if(option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4") || option.equals("5") ||option.equals("6") || option.equals("0")){
                         System.out.println("\n");
                         menu.setVisible();
                     }
@@ -123,17 +125,67 @@ public class Stub extends Thread {
                         out.println(aux);
 
                         this.lock.lock();
-                        c.await();
+                            c.await();
                         this.lock.unlock();
 
                     }
                     else if(option.equals("0")){
-                        out.println("back");
+                        menu.setMenuOption(2);
+                    }
+                    if(option.equals("1") || option.equals("0")){
+                        System.out.println("\n");
+                        menu.setVisible();
+                    }
+                    continue;
+                }
+
+                if(menu.getMenuOption()==4){
+                    if(option.equals("1")){
+                        out.println("listAuctionsMicro");
+
+                        this.lock.lock();
+                            c.await();
+                        this.lock.unlock();
+
+                    }
+                    else if(option.equals("2")){
+                        out.println("listAuctionsLarge");
 
                         this.lock.lock();
                             c.await();
                         this.lock.unlock();
                     }
+
+                    else if(option.equals("0")){
+                        menu.setMenuOption(2);
+                    }
+
+                    if(option.equals("1") || option.equals("2") ||option.equals("0")){
+                        System.out.println("\n");
+                        menu.setVisible();
+                    }
+                    continue;
+                }
+
+                if(menu.getMenuOption()==5){
+                    if(option.equals("1")){
+                        out.println("bid");
+                        System.out.print("Auction to Bid: ");
+                        aux = in.readLine();
+                        out.println(aux);
+                        System.out.print("Value of the Bid: ");
+                        aux = in.readLine();
+                        out.println(aux);
+
+                        this.lock.lock();
+                            c.await();
+                        this.lock.unlock();
+                    }
+
+                    else if(option.equals("0")){
+                        menu.setMenuOption(4);
+                    }
+
                     if(option.equals("1") || option.equals("0")){
                         System.out.println("\n");
                         menu.setVisible();

@@ -59,8 +59,8 @@ public class Skeleton extends Thread{
                 else if(order.equals("acqMicro")){
 
                     try {
-                        cs.assignMicro(this.user.getEmail());
-                        msg.setMessage("Micro Acquired");
+                        String retornoMicro = cs.assignMicro(this.user.getEmail());
+                        msg.setMessage(retornoMicro);
                     } catch (Exception e) {
                         msg.setMessage(e.getMessage());
                     }
@@ -68,8 +68,8 @@ public class Skeleton extends Thread{
                 //caso o pedido recebido seja para adquirir server large
                 else if(order.equals("acqLarge")){
                    try{
-                       cs.assignLarge(this.user.getEmail());
-                       msg.setMessage("Large Acquired");
+                       String retornoLarge = cs.assignLarge(this.user.getEmail());
+                       msg.setMessage(retornoLarge);
                    }
                    catch (Exception e){
                        msg.setMessage(e.getMessage());
@@ -138,10 +138,61 @@ public class Skeleton extends Thread{
                         msg.setMessage(e.getMessage());
                     }
                 }
-                //caso o pedido seja para voltar atrás no menu!
-                else if(order.equals("back")){
+                //Listar os servidores micro em leilão
+                else if(order.equals("listAuctionsMicro")){
                     try{
-                        msg.setMessage("back");
+
+                        Set<Auction> microAuction = cs.listAuctionMicro();
+
+                        StringBuilder sb = new StringBuilder();
+
+                        msg.setMessage("List Auction Micro");
+
+                        for(Auction auc: microAuction) {
+                            sb.append(auc.toString());
+                            sb.append("\n");
+                        }
+
+                        msg.setMessage(sb.toString());
+
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+
+                //Listar os servidores large em Leilão
+                else if(order.equals("listAuctionsLarge")){
+                    try{
+
+                        Set<Auction> largeAuction = cs.listAuctionLarge();
+
+                        StringBuilder sb = new StringBuilder();
+
+                        msg.setMessage("List Auction Large");
+
+                        for(Auction auc: largeAuction) {
+                            sb.append(auc.toString());
+                            sb.append("\n");
+                        }
+
+                        msg.setMessage(sb.toString());
+
+                    }
+                    catch (Exception e){
+                        msg.setMessage(e.getMessage());
+                    }
+                }
+                else if(order.equals("bid")){
+                    try{
+
+                        String auction = in.readLine();
+                        String bid = in.readLine();
+
+                        cs.bid(this.user.getEmail(), Integer.parseInt(auction), Double.parseDouble(bid));
+
+
+                        msg.setMessage("Bidded");
 
                     }
                     catch (Exception e){

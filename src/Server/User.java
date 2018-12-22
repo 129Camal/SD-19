@@ -37,22 +37,22 @@ public class User {
         return nBookings;
     }
 
-    public Booking getBooking(int idBooking) {
+    synchronized public Booking getBooking(int idBooking) {
         return this.bookings.get(idBooking);
     }
 
-    public Set<Booking> getBookings(){
+    synchronized public Set<Booking> getBookings(){
         Set<Booking> result = new HashSet<>(this.bookings.values());
 
         return result;
     }
 
-    public void setBookings(Booking booking) {
+    synchronized public void setBookings(Booking booking) {
         this.bookings.put(booking.getIdBooking(), booking);
         this.nBookings++;
     }
 
-    public void removeBooking(int idBooking){
+    synchronized public void removeBooking(int idBooking){
         this.bookings.remove(idBooking);
     }
 
@@ -69,11 +69,11 @@ public class User {
         return wallet;
     }
 
-    public void addFounds(double wallet) {
+    synchronized public void addFounds(double wallet) {
         this.wallet += wallet;
     }
 
-    public void pay(double value){
+    synchronized public void pay(double value){
         this.wallet -= value;
     }
 

@@ -10,11 +10,12 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 public class Server {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         ServerSocket server = new ServerSocket(4020);
         Socket socket;
         cloudServers cs = new cloudServers();
         cs.populate();
+        cs.initAuctions();
         ReentrantLock lock = new ReentrantLock();
 
         try{

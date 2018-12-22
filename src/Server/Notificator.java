@@ -29,10 +29,8 @@ public class Notificator extends Thread{
             try {
                 String message;
 
-
                 while(true){
                     while((message = msg.getMessage())==null){
-                        //System.out.println("Esperando pelo Signal");
                         c.await();
                     }
                     this.out.println(message);

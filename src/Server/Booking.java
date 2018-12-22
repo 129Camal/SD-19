@@ -23,17 +23,8 @@ public class Booking {
         return idBooking;
     }
 
-    public String getUser() {
-        return user;
-    }
-
     public CServer getServer() {
         return this.server;
-    }
-
-
-    public int getidServer() {
-        return server.getId();
     }
 
     public double reservationTime(){

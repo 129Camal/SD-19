@@ -29,6 +29,18 @@ public class Menu {
                     "* 0 - Back                           *\n"+
                     "**************************************\n");
                 break;
+
+            case 4: System.out.println("************* MENU *******************\n"+
+                    "* 1 - Auctions MicroServers          *\n"+
+                    "* 2 - Auctions LargeServers          *\n"+
+                    "* 0 - Back                           *\n"+
+                    "**************************************\n");
+                break;
+
+            case 5: System.out.println("* 1 - Bid                            *\n"+
+                    "* 0 - Back                           *\n"+
+                    "**************************************\n");
+                break;
         }
     }
 
