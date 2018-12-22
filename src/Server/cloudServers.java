@@ -38,6 +38,9 @@ public class cloudServers {
         this.idAuction = 0;
     }
 
+    /** Populate The Structures
+     * @return void
+     * */
     public void populate(){
         int i;
 
@@ -71,6 +74,9 @@ public class cloudServers {
     }
     */
 
+    /** Manage the Auctions for Micro Servers
+     * @return void
+     * */
     public void manageMicroAuctions(){
 
         while(true) {
@@ -114,6 +120,9 @@ public class cloudServers {
         }
     }
 
+    /** Manage the Auctions for Large Servers
+     * @return void
+     * */
     public void manageLargeAuctions(){
 
         while(true) {
@@ -143,6 +152,8 @@ public class cloudServers {
                     //Esperar 1 min para o leilão decorrer;
                     TimeUnit.MINUTES.sleep(1);
 
+
+                    //Terminar com o leilão
                     if(!auctions.containsKey(auc.getId())){
                         continue;
 
@@ -157,6 +168,10 @@ public class cloudServers {
         }
     }
 
+    /** End Auction
+     * @return void
+     * @param idAuction is the id of the auction to end
+     * */
     private void endAuction(int idAuction){
         this.auctionsLock.lock();
 
@@ -194,6 +209,9 @@ public class cloudServers {
         }
     }
 
+    /** Get a Micro Server and create a Auction
+     * @return Auction
+     * */
     public Auction getmicroAuction() throws Exception{
         this.serversMicroLock.lock();
         Auction auction;
@@ -216,6 +234,9 @@ public class cloudServers {
         }
     }
 
+    /** Get a Large Server and create a Auction
+     * @return Auction
+     * */
     public Auction getlargeAuction() throws Exception {
         this.serversLargeLock.lock();
         Auction auction;
@@ -237,6 +258,9 @@ public class cloudServers {
         }
     }
 
+    /** Get a list of Auctions for Micro Servers that are live!
+     * @return Set of Auctions
+     * */
     public Set<Auction> listAuctionMicro(){
         this.auctionsLock.lock();
         Set<Auction> microAuctions;
@@ -252,6 +276,9 @@ public class cloudServers {
         }
     }
 
+    /** Get a list of Auctions for Large Servers that are live!
+     * @return Set of Auctions
+     * */
     public Set<Auction> listAuctionLarge(){
         this.auctionsLock.lock();
         Set<Auction> largeAuctions;
@@ -267,12 +294,22 @@ public class cloudServers {
         }
     }
 
+    /** Do a Bid for a certain live Auction
+     * @return void
+     * @param email is the email of the user
+     * @param idAuction is the id of the Auction
+     * @param value is the value of the bid
+     * */
     public void bid(String email, int idAuction, double value) throws Exception{
         this.auctionsLock.lock();
 
         try{
+            if(auctions.containsKey(idAuction)){
+                auctions.get(idAuction).bid(email, value);
+            } else{
+                throw new Exception("Wrong Auction!");
+            }
 
-            auctions.get(idAuction).bid(email, value);
 
         } finally {
 
@@ -281,10 +318,9 @@ public class cloudServers {
         }
     }
 
-
-
-
-
+    /** Log In
+     * @return User who just logged in
+     * */
     public User logIn(String email, String password, MessageInbox m) throws Exception {
         this.usersLock.lock();
 
@@ -319,6 +355,9 @@ public class cloudServers {
 
     }
 
+    /** Sign In
+     * @return void
+     * */
     public void signIn(String email, String password, MessageInbox m) throws Exception {
         this.usersLock.lock();
 
@@ -342,6 +381,10 @@ public class cloudServers {
         }
     }
 
+    /** Notify all Users to certain event
+     * @return void
+     * @param s is the message to send
+     * */
     private void notifyUsers(String s){
         this.usersLock.lock();
 
@@ -356,6 +399,10 @@ public class cloudServers {
         }
     }
 
+    /** Assign a Micro Server to a certain User
+     * @return void
+     * @param email is the email of the User who wants the server
+     * */
     public void assignMicro(String email) throws Exception {
         this.serversMicroLock.lock();
 
@@ -371,13 +418,15 @@ public class cloudServers {
                         .filter(e -> e.isAvailable())
                         .findAny()
                         .get();
-            }
-            else {
-                m = (CServerMicro) getServerMicroFromAuction();
-                notifyUsers("Auction Micro Canceled!");
+                m.setAvailable(false);
             }
 
-            m.setAvailable(false);
+            else {
+                Auction auc = getServerMicroFromAuction();
+                m = (CServerMicro) auc.getServer();
+                notifyUsers("Auction Micro Canceled with ID: " + auc.getId() + "!");
+            }
+
             Booking booking = new Booking(idBooking, email, (CServer) m.clone());
 
             this.usersLock.lock();
@@ -393,9 +442,12 @@ public class cloudServers {
 
     }
 
-    private CServer getServerMicroFromAuction() throws Exception {
+    /** Get a Auction that contains a micro server from a live auction!
+     * @return Auction
+     * */
+    private Auction getServerMicroFromAuction() throws Exception {
             this.auctionsLock.lock();
-            CServer server;
+            Auction auc;
 
             try {
 
@@ -405,20 +457,18 @@ public class cloudServers {
                         .count();
 
                 if(aucount > 0){
-                    Auction auc = auctions.values()
+                    auc = auctions.values()
                             .stream()
                             .filter(e -> e.getServer() instanceof CServerMicro)
                             .findAny()
                             .get();
-                    server = auc.getServer();
+
                     auctions.remove(auc.getId());
+                    return auc;
 
                 } else {
                     throw new Exception("Server Unavailable");
                 }
-
-                return server;
-
             } finally {
                 this.auctionsLock.unlock();
             }
@@ -426,6 +476,10 @@ public class cloudServers {
 
     }
 
+    /** Assign a Large Server to a certain User
+     * @return void
+     * @param email is the email of the User who wants the server
+     * */
     public void assignLarge(String email) throws Exception {
         this.serversLargeLock.lock();
         CServerLarge l;
@@ -440,12 +494,12 @@ public class cloudServers {
                                                   .filter( e -> e.isAvailable())
                                                   .findAny()
                                                   .get();
+                l.setAvailable(false);
             } else{
-                l = (CServerLarge) getServerLargeFromAuction();
-                notifyUsers("Auction Large Canceled!");
+                Auction auc = getServerLargeFromAuction();
+                l = (CServerLarge) auc.getServer();
+                notifyUsers("Auction Large Canceled with ID: " + auc.getId() + "!");
             }
-
-            l.setAvailable(false);
 
             Booking booking = new Booking(this.idBooking, email, (CServer) l.clone());
 
@@ -462,9 +516,12 @@ public class cloudServers {
 
     }
 
-    private CServer getServerLargeFromAuction() throws Exception {
+    /** Get a Auction that contains a large server from a live auction!
+     * @return Auction
+     * */
+    private Auction getServerLargeFromAuction() throws Exception {
         this.auctionsLock.lock();
-        CServer server;
+        Auction auc;
 
         try {
             long aucount = auctions.values()
@@ -473,21 +530,18 @@ public class cloudServers {
                     .count();
 
             if(aucount > 0){
-                Auction auc = auctions.values()
+                auc = auctions.values()
                         .stream()
                         .filter(e -> e.getServer() instanceof CServerLarge)
                         .findAny()
                         .get();
 
-                server = auc.getServer();
                 auctions.remove(auc.getId());
-
+                return auc;
 
             } else {
                 throw new Exception("Server Unavailable");
             }
-
-            return server;
 
         } finally {
             this.auctionsLock.unlock();
@@ -496,6 +550,10 @@ public class cloudServers {
 
     }
 
+    /** Get all the reserved servers of an user
+     * @return Set of Bookings
+     * @param email is the email of the user
+     * */
     public Set<Booking> listServers(String email){
 
         Set<Booking> bookings;
@@ -513,15 +571,19 @@ public class cloudServers {
         }
 
     }
-    public User addFounds(String email, double value){
+
+    /** Add founds to the wallet of a certain user
+     * @return User that the founds were added
+     * @param email is the email of the user
+     * @param value is the amount to add to the wallet
+     * */
+    public void addFounds(String email, double value){
 
         this.usersLock.lock();
 
         try{
             users.get(email).addFounds(value);
             User u = users.get(email).clone();
-
-            return u;
         }
         finally {
             this.usersLock.unlock();
@@ -529,41 +591,65 @@ public class cloudServers {
 
     }
 
-    public User terminateServer(String email, int nBooking){
+    /** End a reservation
+     * @return User
+     * @param email is the email of the user
+     * @param nBooking is the id of the reservation to end
+     * */
+    public void terminateServer(String email, int nBooking) throws Exception {
 
         this.usersLock.lock();
 
         try{
-            double price = users.get(email).getBooking(nBooking).reservationTime();
 
-            CServer server = users.get(email).getBooking(nBooking).getServer();
+            if(users.get(email).getBooking(nBooking) != null) {
+                double price = users.get(email).getBooking(nBooking).reservationTime();
 
-            if(server instanceof CServerLarge){
+                CServer server = users.get(email).getBooking(nBooking).getServer();
 
-                this.serversLargeLock.lock();
+                if (server instanceof CServerLarge) {
+
+                    this.serversLargeLock.lock();
                     CServerLarge lserver = serversLarge.get(server.getId());
                     lserver.setAvailable(true);
-                this.serversLargeLock.unlock();
+                    this.serversLargeLock.unlock();
 
-            } else if (server instanceof CServerMicro){
+                } else if (server instanceof CServerMicro) {
 
-                this.serversMicroLock.lock();
+                    this.serversMicroLock.lock();
                     CServerMicro mserver = serversMicro.get(server.getId());
                     mserver.setAvailable(true);
-                this.serversMicroLock.unlock();
+                    this.serversMicroLock.unlock();
+                }
+
+                users.get(email).removeBooking(nBooking);
+
+                users.get(email).pay(price);
+            } else {
+                throw new Exception("Invalid Reservation");
             }
-
-            users.get(email).removeBooking(nBooking);
-
-            users.get(email).pay(price);
-
-            return users.get(email).clone();
-
         }
         finally {
             this.usersLock.unlock();
         }
 
+    }
+
+    /** Get the personal data from a user
+     * @return User
+     * @param email is the email of the user
+     * */
+    public User getPersonalData(String email){
+        this.usersLock.lock();
+
+        try{
+
+            User user = users.get(email).clone();
+            return user;
+
+        } finally {
+            this.usersLock.unlock();
+        }
     }
 
     

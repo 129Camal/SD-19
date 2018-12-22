@@ -136,18 +136,38 @@ public class Reader extends Thread{
                 }
 
                 //Cancel a auction for a micro server
-                else if (response.equals("Auction Micro Canceled!")){
+                else if (response.startsWith("Auction Micro Canceled")){
                     System.out.println("**************************************\n");
-                    System.out.println(" Auction for a Micro Server Canceled!\n");
+                    System.out.println(response + "\n");
                     System.out.println("**************************************");
 
 
                 }
                 //Cancel a auction for a Large server
-                else if (response.equals("Auction Large Canceled!")){
+                else if (response.startsWith("Auction Large Canceled")){
                     System.out.println("**************************************\n");
-                    System.out.println(" Auction for a Large Server Canceled!\n");
+                    System.out.println(response + "\n");
                     System.out.println("**************************************");
+                }
+
+                //Warning about invalid reservation to end
+                else if (response.equals("Invalid Reservation")){
+                    System.out.print("\n");
+                    System.out.println("NOT A VALID RESERVATION!\n");
+
+                    this.lock.lock();
+                    c.signal();
+                    this.lock.unlock();
+                }
+
+                //Warning about invalid reservation to end
+                else if (response.equals("Wrong Auction!")){
+                    System.out.print("\n");
+                    System.out.println("NOT A VALID AUCTION!\n");
+
+                    this.lock.lock();
+                    c.signal();
+                    this.lock.unlock();
                 }
 
                 //Server Unavailable

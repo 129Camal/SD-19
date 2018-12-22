@@ -15,7 +15,7 @@ public class Skeleton extends Thread{
     private cloudServers cs;
     private MessageInbox msg;
 
-    public Skeleton(cloudServers cs, MessageInbox msg, BufferedReader in) throws IOException {
+    public Skeleton(cloudServers cs, MessageInbox msg, BufferedReader in)  {
         this.cs = cs;
         this.in = in;
         this.msg = msg;
@@ -100,7 +100,7 @@ public class Skeleton extends Thread{
                     try{
                         value = in.readLine();
 
-                        this.user = cs.addFounds(this.user.getEmail(), Double.parseDouble(value));
+                        cs.addFounds(this.user.getEmail(), Double.parseDouble(value));
 
                         msg.setMessage("FoundsAdded");
 
@@ -113,9 +113,9 @@ public class Skeleton extends Thread{
                 else if(order.equals("personalinformation")){
                     try{
 
-                        value = this.user.toString();
+                        this.user = cs.getPersonalData(this.user.getEmail());
                         msg.setMessage("userinfor");
-                        msg.setMessage(value);
+                        msg.setMessage(this.user.toString());
 
                     }
                     catch (Exception e){
@@ -128,7 +128,7 @@ public class Skeleton extends Thread{
 
                         value = in.readLine();
 
-                        this.user = cs.terminateServer(this.user.getEmail(), Integer.parseInt(value));
+                        cs.terminateServer(this.user.getEmail(), Integer.parseInt(value));
 
 
                         msg.setMessage("serviceEnded");
