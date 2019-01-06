@@ -5,13 +5,11 @@ import java.util.ArrayList;
 public class Auction {
     private int id;
     private CServer server;
-    private ArrayList<String> buyers;
     private Bid bestBid;
 
     public Auction(int id, CServer server) {
         this.id = id;
         this.server = server;
-        this.buyers = new ArrayList<>();
         this.bestBid = new Bid(null, 0);
     }
 
@@ -19,7 +17,6 @@ public class Auction {
         if (this.bestBid.getBidValue() > price)
             throw new Exception("Highest Value Bidded!");
 
-        buyers.add(user);
         bestBid = new Bid(user, price);
     }
 

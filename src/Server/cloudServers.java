@@ -88,31 +88,33 @@ public class cloudServers {
                     .count();
             this.auctionsLock.unlock();
 
-            this.serversMicroLock.lock();
-            long numberMicro = serversMicro.values()
-                    .stream()
-                    .filter(e -> e.isAvailable())
-                    .count();
-            this.serversMicroLock.unlock();
-
-            if(aucount == 0 && numberMicro > 0){
+            if(aucount == 0){
                 try {
-                    //Criar Leilão
-                    this.auctionsLock.lock();
-                    Auction auc = getmicroAuction();
-                    auctions.put(auc.getId(), auc);
-                    this.auctionsLock.unlock();
 
-                    //Esperar 1 min para o leilão decorrer;
-                    TimeUnit.MINUTES.sleep(1);
+                    this.serversMicroLock.lock();
+                    long numberMicro = serversMicro.values()
+                            .stream()
+                            .filter(e -> e.isAvailable())
+                            .count();
+                    this.serversMicroLock.unlock();
 
-                    if(!auctions.containsKey(auc.getId())){
-                        continue;
+                    if(numberMicro > 0) {
+                        //Criar Leilão
+                        this.auctionsLock.lock();
+                        Auction auc = getmicroAuction();
+                        auctions.put(auc.getId(), auc);
+                        this.auctionsLock.unlock();
 
-                    } else{
-                      endAuction(auc.getId());
+                        //Esperar 1 min para o leilão decorrer;
+                        TimeUnit.MINUTES.sleep(1);
+
+                        if (!auctions.containsKey(auc.getId())) {
+                            continue;
+
+                        } else {
+                            endAuction(auc.getId());
+                        }
                     }
-
                 } catch (Exception e) {
                     continue;
                 }
@@ -134,33 +136,35 @@ public class cloudServers {
                     .count();
             this.auctionsLock.unlock();
 
-            this.serversLargeLock.lock();
-            long numberlarge = serversLarge.values()
-                    .stream()
-                    .filter(e -> e.isAvailable())
-                    .count();
-            this.serversLargeLock.unlock();
-
-            if(aucount == 0 && numberlarge > 0){
+            if(aucount == 0){
                 try {
-                    //Criar Leilão
-                    this.auctionsLock.lock();
-                    Auction auc = getlargeAuction();
-                    auctions.put(auc.getId(), auc);
-                    this.auctionsLock.unlock();
 
-                    //Esperar 1 min para o leilão decorrer;
-                    TimeUnit.MINUTES.sleep(1);
+                    this.serversLargeLock.lock();
+                    long numberlarge = serversLarge.values()
+                            .stream()
+                            .filter(e -> e.isAvailable())
+                            .count();
+                    this.serversLargeLock.unlock();
+
+                    if(numberlarge > 0) {
+                        //Criar Leilão
+                        this.auctionsLock.lock();
+                        Auction auc = getlargeAuction();
+                        auctions.put(auc.getId(), auc);
+                        this.auctionsLock.unlock();
+
+                        //Esperar 1 min para o leilão decorrer;
+                        TimeUnit.MINUTES.sleep(1);
 
 
-                    //Terminar com o leilão
-                    if(!auctions.containsKey(auc.getId())){
-                        continue;
+                        //Terminar com o leilão
+                        if (!auctions.containsKey(auc.getId())) {
+                            continue;
 
-                    } else{
-                        endAuction(auc.getId());
+                        } else {
+                            endAuction(auc.getId());
+                        }
                     }
-
                 } catch (Exception e) {
                     continue;
                 }
@@ -212,7 +216,7 @@ public class cloudServers {
     /** Get a Micro Server and create a Auction
      * @return Auction
      * */
-    public Auction getmicroAuction() throws Exception{
+    public Auction getmicroAuction(){
         this.serversMicroLock.lock();
         Auction auction;
 
@@ -237,7 +241,7 @@ public class cloudServers {
     /** Get a Large Server and create a Auction
      * @return Auction
      * */
-    public Auction getlargeAuction() throws Exception {
+    public Auction getlargeAuction() {
         this.serversLargeLock.lock();
         Auction auction;
 
@@ -386,7 +390,7 @@ public class cloudServers {
      * @param s is the message to send
      * */
     private void notifyUsers(String s){
-        this.usersLock.lock();
+        this.messagesLock.lock();
 
         try{
             userMessages.forEach((email, message) -> {
@@ -395,7 +399,7 @@ public class cloudServers {
 
         }
         finally {
-            this.usersLock.unlock();
+            this.messagesLock.unlock();
         }
     }
 
